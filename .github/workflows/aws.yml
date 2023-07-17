@@ -16,17 +16,19 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v1
 
+      - name: Authenticate with ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registry: private
+
       - name: Build and Push Docker Image
         env:
-          AWS_REGION: us-east-1
           ECR_REPOSITORY_NAME: front-end
           DOCKER_IMAGE_TAG: latest
-          AWS_ACCOUNT_ID: 678229030360
         run: |
-          echo ${{ secrets.AWS_ACCESS_KEY_ID }} | docker login --username AWS --password-stdin https://$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-          docker build -t $ECR_REPOSITORY_NAME .
-          docker tag $ECR_REPOSITORY_NAME:$DOCKER_IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY_NAME:$DOCKER_IMAGE_TAG
-          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY_NAME:$DOCKER_IMAGE_TAG
+          docker buildx create --use --name builder
+          docker buildx build --platform linux/amd64 --tag $ECR_REPOSITORY_NAME:$DOCKER_IMAGE_TAG --push .
 
       - name: Deploy to EC2 Auto Scaling Group
         uses: aws-actions/configure-aws-credentials@v1
