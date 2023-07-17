@@ -46,10 +46,6 @@ jobs:
 
 
 
-      - name: Extract Container Name
-        id: extract_container_name
-        run: |
-          echo "::set-output name=container_name::front-end"  # Replace "your-container-name" with your actual container name
 
       - name: Deploy to EC2 Auto Scaling Group
         uses: aws-actions/configure-aws-credentials@v1
@@ -67,18 +63,10 @@ jobs:
 
       - name: Deploy Docker image to EC2 instances
         env:
-          AUTO_SCALING_GROUP_NAME: WEB-Server
           ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
           ECR_REPOSITORY: front-end
-          CONTAINER_NAME: ${{ steps.extract_container_name.outputs.container_name }}
         run: |
-          INSTANCE_IDS=$(aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names $AUTO_SCALING_GROUP_NAME --query "AutoScalingGroups[].Instances[].InstanceId" --output text)
-          aws ec2 stop-instances --instance-ids $INSTANCE_IDS --region ${{ env.AWS_REGION }}
-          sleep 60
-          aws ec2 start-instances --instance-ids $INSTANCE_IDS --region ${{ env.AWS_REGION }}
-          sleep 60
-          aws ec2 wait instance-status-ok --instance-ids $INSTANCE_IDS --region ${{ env.AWS_REGION }}
+          INSTANCE_IDS=$(aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names WEB-Server --query "AutoScalingGroups[].Instances[].InstanceId" --output text)
           for INSTANCE_ID in $INSTANCE_IDS; do
-            aws ssm send-command --instance-ids $INSTANCE_ID --document-name "AWS-RunShellScript" --comment "Update Docker image" --parameters "commands=['sudo docker pull ${ECR_REGISTRY}/${ECR_REPOSITORY}:latest', 'sudo docker stop ${CONTAINER_NAME}', 'sudo docker rm ${CONTAINER_NAME}', 'sudo docker run -d --name ${CONTAINER_NAME} -p 80:80 ${ECR_REGISTRY}/${ECR_REPOSITORY}:latest']" --region ${{ env.AWS_REGION }}
+            aws ssm send-command --instance-ids $INSTANCE_ID --document-name "AWS-RunShellScript" --comment "Update Docker image" --parameters "commands=['sudo docker pull ${ECR_REGISTRY}/${ECR_REPOSITORY}:latest', 'sudo docker stop \$(sudo docker ps -q)', 'sudo docker rm \$(sudo docker ps -aq)', 'sudo docker run -d -p 80:80 ${ECR_REGISTRY}/${ECR_REPOSITORY}:latest']" --region ${{ env.AWS_REGION }}
           done
-
