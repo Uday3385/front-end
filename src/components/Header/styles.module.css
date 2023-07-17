@@ -1,0 +1,43 @@
+.appHeader {
+    background-color: #fff;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    height: 60px;
+    width: 100%;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    position: fixed;
+}
+
+.appHeaderWrapper {
+    width: 100%;
+    height: 60px;
+    box-shadow: 0px 1px 6px 0px rgba(123, 133, 160, 0.25);
+    display: flex;
+    align-items: center;
+    padding: 0px 20px;
+}
+
+.appTitle {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.appTitleText {
+    font-size: 24px;
+    /* font-family: Roboto; */
+    font-family: Nunito;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    /* margin-left: 3px; */
+}
+
+.appHeaderButtons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}

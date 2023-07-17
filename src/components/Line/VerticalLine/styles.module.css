@@ -1,0 +1,7 @@
+.verticalLine {
+    width: 1px;
+    height: 36px;
+    flex-shrink: 0;
+    margin: 0px 10px;
+    background-color: #d7dcea;
+}

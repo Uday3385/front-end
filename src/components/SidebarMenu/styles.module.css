@@ -1,0 +1,7 @@
+.sidebarMenu {
+    width: 200px;
+    height: calc(100vh - 60px);
+    background: #fff;
+    padding: 20px 0px 0px 0px;
+    box-shadow: 1px 0px 6px 0px rgba(123, 133, 160, 0.25);
+}

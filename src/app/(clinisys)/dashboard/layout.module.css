@@ -1,0 +1,49 @@
+.dashboardLayout {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    background: #eee;
+    overflow: hidden;
+}
+
+.dashboardWrapper {
+    display: flex;
+    width: 100%;
+    height: auto;
+    background: #eee;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.dashboardSidebar {
+    position: fixed;
+}
+
+.dashboardContent {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.noSelect,
+.noSelectContainer strong,
+.noSelectContainer section,
+.noSelectContainer div,
+.noSelectContainer p,
+.noSelectContainer span,
+.noSelectContainer button,
+.noSelectContainer h2,
+.noSelectContainer h3,
+.noSelectContainer h4,
+.noSelectContainer h5,
+.noSelectContainer h6,
+.noSelectContainer input {
+    cursor: default;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
