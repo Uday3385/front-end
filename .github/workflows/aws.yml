@@ -21,11 +21,12 @@ jobs:
           AWS_REGION: us-east-1
           ECR_REPOSITORY_NAME: front-end
           DOCKER_IMAGE_TAG: latest
+          AWS_ACCOUNT_ID: 678229030360
         run: |
-          echo ${{ secrets.AWS_ACCESS_KEY_ID }} | docker login --username AWS --password-stdin https://${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.$AWS_REGION.amazonaws.com
+          echo ${{ secrets.AWS_ACCESS_KEY_ID }} | docker login --username AWS --password-stdin https://$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
           docker build -t $ECR_REPOSITORY_NAME .
           docker tag $ECR_REPOSITORY_NAME:$DOCKER_IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY_NAME:$DOCKER_IMAGE_TAG
-          docker push ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY_NAME:$DOCKER_IMAGE_TAG
+          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY_NAME:$DOCKER_IMAGE_TAG
 
       - name: Deploy to EC2 Auto Scaling Group
         uses: aws-actions/configure-aws-credentials@v1
