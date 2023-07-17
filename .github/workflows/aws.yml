@@ -30,14 +30,22 @@ jobs:
           registry: private
         env:
           AWS_REGION: us-east-1
-
+  
       - name: Build and Push Docker Image
+        uses: docker/build-push-action@v3
         env:
-          ECR_REPOSITORY_NAME: front-end
-          DOCKER_IMAGE_TAG: latest
-        run: |
-          docker buildx create --use --name builder
-          docker buildx build --platform linux/amd64 --tag $ECR_REPOSITORY_NAME:$DOCKER_IMAGE_TAG --push .
+          ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
+          ECR_REPOSITORY: front-end
+        with:
+          context: .
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
+            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.run_number }}
+
+
+
 
       - name: Deploy to EC2 Auto Scaling Group
         uses: aws-actions/configure-aws-credentials@v1
