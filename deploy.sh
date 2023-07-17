@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variables
-ECR_REGISTRY="private"
+ECR_REGISTRY="678229030360.dkr.ecr.us-east-1.amazonaws.com"
 ECR_REPOSITORY="front-end"
 
 # Pull the Docker image from ECR
