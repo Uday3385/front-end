@@ -61,6 +61,20 @@ jobs:
         run: |
           aws autoscaling update-auto-scaling-group --auto-scaling-group-name $AUTO_SCALING_GROUP_NAME --region ${{ env.AWS_REGION }} --launch-template LaunchTemplateName=$LAUNCH_TEMPLATE_NAME
 
+      - name: Remove old containers and images from EC2 instances
+        env:
+          AUTO_SCALING_GROUP_NAME: WEB-Server
+        run: |
+          INSTANCE_IDS=$(aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names $AUTO_SCALING_GROUP_NAME --query "AutoScalingGroups[].Instances[].InstanceId" --output text)
+          for INSTANCE_ID in $INSTANCE_IDS; do
+            # Stop and remove existing containers
+            ssh -o StrictHostKeyChecking=no ec2-user@$INSTANCE_ID 'sudo docker stop $(sudo docker ps -q) && sudo docker rm $(sudo docker ps -aq)'
+
+            # Remove old Docker images
+            ssh -o StrictHostKeyChecking=no ec2-user@$INSTANCE_ID 'sudo docker image prune -a --force'
+          done
+
+
       - name: Deploy Docker image to EC2 instances
         env:
           AUTO_SCALING_GROUP_NAME: WEB-Server
