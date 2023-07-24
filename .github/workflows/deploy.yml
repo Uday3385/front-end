@@ -29,3 +29,8 @@ jobs:
           
       - name: Deploy app build to S3 bucket
         run: aws s3 sync ./out/ s3://clinisystest --delete
+        
+      - name: Invalidate cloudfront distribution
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{secrets.DEV_DISTRIBUTION_ID}} --paths '/*'
+          echo "DEPLOYED SUCCESSFULLY"
