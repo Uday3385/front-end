@@ -1,6 +1,6 @@
 const styles = {
     label: {
-        width: '170px',
+        minWidth: '123px',
         fontSize: '13px',
         fontWeight: 600,
     },

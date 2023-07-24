@@ -1,63 +1,70 @@
 'use client';
 
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
+import {
+    useHandleSelectedDraggedItemsByContext,
+    useSelectedDraggedItemContext,
+    getReportDataElementId,
+} from '@/src/hooks/useReportBuilder';
+
+import type { ReportBuilderDragDropContextType } from '@/src/types';
 import { reportBuilderDragDropContext } from '@/src/redux/reducers/reportBuilder';
+import RuleReportBuilderDropContainer from './RuleReportBuilderDropContainer';
 import { useSetupGlobalDragDrop } from '@/src/hooks/useGlobalDragDrop';
-import DragDropDirectionArrows from '../DragDropDirectionArrows';
+import ReportBuilderDropContainer from './ReportBuilderDropContainer';
 import DataElements from '../DataElements';
 import { useTheme } from '@/src/theme';
-import DropRegion from '../DropRegion';
 import stylesObj from './styles';
+import ApplyReportButton from '../ApplyReportButton';
 
-export default function DragDropElements() {
+export default function DragDropElements({ isRuleReportBuilderPage = false }: { isRuleReportBuilderPage?: boolean }) {
     const theme = useTheme(),
-        { isReady } = useSetupGlobalDragDrop({
-            // dropEffect: 'move',
-            // effectAllowed: 'move',
-            contextType: reportBuilderDragDropContext,
-            onDragStart: (args) => {
-                console.log('start: ', args);
-            },
-            onDrop: (args) => {
-                console.log('drop: ', args);
-            },
-            // onDragEnter: (args) => {
-            //     console.log('drag enter: ', args);
-            // },
-            onDragOver: (args) => {
-                console.log('drag over: ', args);
-            },
-            onDragLeave: (args) => {
-                console.log('drag leave: ', args);
-            },
-            onDragEnd: (args) => {
-                console.log('drag end: ', args);
-            },
-        });
+        handleSelectedDraggedItemsByContext = useHandleSelectedDraggedItemsByContext(),
+        selectedDraggedItemContext = useSelectedDraggedItemContext(),
+        buttonStyle = { margin: '10px 0px 0px 0px' };
+
+    const { isReady } = useSetupGlobalDragDrop({
+        getItemId: getReportDataElementId,
+        contextType: reportBuilderDragDropContext,
+        onDragStart: ({ event }) => {
+            const elem = event.target as HTMLElement;
+            if (!elem?.classList) return;
+
+            let dragContextType = selectedDraggedItemContext;
+
+            if (!selectedDraggedItemContext) {
+                dragContextType = elem.getAttribute('data-context-type') as ReportBuilderDragDropContextType;
+
+                if (!dragContextType) return;
+            }
+
+            handleSelectedDraggedItemsByContext({
+                dataElementId: elem.getAttribute('data-draggable-id') as string,
+                isDragStart: true,
+                multiple: !isRuleReportBuilderPage,
+                context: dragContextType,
+            });
+        },
+    });
 
     return (
         <Box sx={stylesObj({ theme })}>
-            <div className="dragElements">{isReady ? <DataElements /> : null}</div>
+            <div className="dragElements">{isReady ? <DataElements multiple={!isRuleReportBuilderPage} /> : null}</div>
 
             <div className="droppedElements">
-                <div className="reportPrompts">
-                    <DragDropDirectionArrows directionType="reportPrompts" />
-
-                    <div className="dropBoxRapper">
-                        <Typography className="dragDropTitle">Report Prompts</Typography>
-                        {isReady ? <DropRegion dropRegion="reportPrompts" /> : null}
-                    </div>
-                </div>
-                <div className="reportColumns">
-                    <DragDropDirectionArrows directionType="columns" />
-
-                    <div className="dropBoxRapper">
-                        <Typography className="dragDropTitle">Columns</Typography>
-                        {isReady ? <DropRegion dropRegion="columns" /> : null}
-                    </div>
-                </div>
+                {isReady && (
+                    <>
+                        {isRuleReportBuilderPage ? (
+                            <>
+                                <RuleReportBuilderDropContainer />
+                                <ApplyReportButton sx={buttonStyle} isRuleReportBuilderPage={true} />
+                            </>
+                        ) : (
+                            <ReportBuilderDropContainer />
+                        )}
+                    </>
+                )}
             </div>
         </Box>
     );

@@ -12,11 +12,6 @@ import '@fontsource/roboto/700.css';
 import './globals.css';
 import App from '@/src/root';
 
-export const metadata = {
-    title: 'Clinisys',
-    description: 'Clinisys App',
-};
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en">

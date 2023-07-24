@@ -21,11 +21,29 @@ const styles = {
             transition: 'all 300ms',
             cursor: 'grab',
 
+            '&:active': {
+                '& .draggedItemsCount': {
+                    display: 'inline-block',
+                },
+            },
+
             '&:hover': {
                 borderColor: theme.palette.primary.main,
                 '& .dataElementDragIndicator svg': {
                     fill: greyDarken,
                 },
+            },
+
+            '& .dataElementTitleText': {
+                flexGrow: 1,
+            },
+
+            '& .draggedItemsCount': {
+                display: 'none',
+                marginRight: '6px',
+                fontSize: '13px',
+                fontWeight: 500,
+                fontFamily: theme.typography.fontFamily,
             },
 
             '& .dataElementRibbon': {
@@ -51,12 +69,34 @@ const styles = {
             '& .dataElementDragIndicator': {
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                width: '16px',
+                justifyContent: 'flex-end',
+                width: 'auto',
+                marginRight: '-3px',
 
                 '& svg': {
                     width: '15px',
                     fill: theme.palette.borderColor.main,
+                },
+            },
+
+            '& .removeDataElementBtn': {
+                width: '20px',
+                height: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                marginRight: '3px',
+                borderRadius: '100%',
+
+                '&:hover': {
+                    backgroundColor: theme.palette.borderColor.main,
+                    color: '#555',
+                },
+
+                '& svg': {
+                    fontSize: '18px',
+                    fill: greyDarken,
                 },
             },
         };

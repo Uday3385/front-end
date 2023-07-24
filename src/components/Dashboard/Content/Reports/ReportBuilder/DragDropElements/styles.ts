@@ -5,7 +5,17 @@ const styles = ({ theme }: { theme: Theme }) => {
         border = `1px solid ${borderColor}`,
         lightGrey = theme.palette.borderColor.lightGrey,
         greyDarken = theme.palette.borderColor.greyDarken,
+        iconColor = theme.palette.borderColor.mediumGrey,
         primaryColor = theme.palette.primary.main;
+
+    const dataElementSelectedStyle = {
+        borderColor: primaryColor,
+        fontWeight: 600,
+
+        '& .dataElementDragIndicator svg': {
+            fill: greyDarken,
+        },
+    };
 
     return {
         width: '100%',
@@ -25,6 +35,30 @@ const styles = ({ theme }: { theme: Theme }) => {
             fontSize: '13px',
             fontWeight: 700,
             color: theme.palette.borderColor.greyDarken,
+
+            '& .dragDropTitleText': {
+                flexGrow: 1,
+                fontSize: '13px',
+                fontWeight: 700,
+            },
+        },
+
+        '& .dragDropTitleBtnWrapper': {
+            display: 'flex',
+
+            '& button': {
+                width: '21px',
+                height: '21px',
+
+                '& svg': {
+                    fontSize: '22px',
+                    fill: iconColor,
+                },
+            },
+
+            '& button.checkAllDataElementsBtn': {
+                marginRight: '10px',
+            },
         },
 
         '& .dataElementEmptyText': {
@@ -54,14 +88,7 @@ const styles = ({ theme }: { theme: Theme }) => {
             },
 
             // Selected data element
-            '& .dataElementSelected': {
-                borderColor: primaryColor,
-                fontWeight: 600,
-
-                '& .dataElementDragIndicator svg': {
-                    fill: greyDarken,
-                },
-            },
+            '& .dataElementSelected': dataElementSelectedStyle,
         },
 
         '& .droppedElements': {
@@ -72,6 +99,42 @@ const styles = ({ theme }: { theme: Theme }) => {
                 height: '50%',
                 display: 'flex',
                 width: '100%',
+            },
+
+            '& .reportPromptsValue': {
+                height: '40%',
+                minHeight: '300px',
+
+                '& .dragDropBoxWrapper': {
+                    height: '50%',
+                },
+
+                '& .dragDropDirection': {
+                    height: 'calc(100% - 30%)',
+                },
+
+                '& .dropElementPlaceholder': {
+                    display: 'flex !important',
+                    alignItems: 'center  !important',
+                    justifyContent: 'center  !important',
+
+                    '& .dataElement': {
+                        margin: '0px !important',
+                    },
+                    '& .dataElementSingle': {
+                        width: 'auto !important',
+                    },
+                },
+            },
+
+            '& .reportColumns.reportPromptsValue': {
+                '& .dragDropTitle': {
+                    display: 'none',
+                },
+
+                '& .dragDropDirection': {
+                    height: 'calc(100% - 48%)',
+                },
             },
 
             '& .reportColumns': {
@@ -106,27 +169,6 @@ const styles = ({ theme }: { theme: Theme }) => {
                 },
             },
 
-            '& .dropBoxRapper': {
-                width: '100%',
-                flexGrow: 1,
-            },
-
-            '& .boxWrapper': {
-                border,
-                height: 'calc(100% - 35px)',
-                borderRadius: '3px',
-                padding: '15px',
-            },
-            '& .boxWrapper.boxWrapperDraggingOverItem:not(.boxWrapperDropDisabled)': {
-                border: `2px solid ${primaryColor} !important`,
-            },
-            '& .boxWrapper.boxWrapperDraggingItem:not(.boxWrapperDropDisabled)': {
-                border: `2px dashed ${primaryColor}`,
-            },
-            '& .boxWrapper.boxWrapperDraggingOverNoElement:not(.boxWrapperDropDisabled)': {
-                border: `2px solid ${primaryColor}`,
-            },
-
             '& .dropRegion': {
                 height: '100%',
                 width: '100%',
@@ -134,6 +176,9 @@ const styles = ({ theme }: { theme: Theme }) => {
                 backgroundColor: lightGrey,
                 borderRadius: '3px',
                 border: `1.4px dashed ${borderColor}`,
+
+                // Selected data element
+                '& .dataElementSelected': dataElementSelectedStyle,
             },
 
             '& .dropRegion.dropRegionHasList': {
@@ -171,6 +216,27 @@ const styles = ({ theme }: { theme: Theme }) => {
                 fontSize: '13px',
                 color: greyDarken,
             },
+        },
+
+        '& .dropBoxRapper': {
+            width: '100%',
+            flexGrow: 1,
+        },
+
+        '& .dragDropBoxWrapper.boxWrapper': {
+            border,
+            height: 'calc(100% - 35px)',
+            borderRadius: '3px',
+            padding: '15px',
+        },
+        '& .dragDropBoxWrapper.boxWrapper.boxWrapperDraggingOverItem:not(.boxWrapperDropDisabled)': {
+            border: `2px solid ${primaryColor} !important`,
+        },
+        '& .dragDropBoxWrapper.boxWrapper.boxWrapperDraggingItem:not(.boxWrapperDropDisabled)': {
+            border: `2px dashed ${primaryColor}`,
+        },
+        '& .dragDropBoxWrapper.boxWrapper.boxWrapperDraggingOverNoElement:not(.boxWrapperDropDisabled)': {
+            border: `2px solid ${primaryColor}`,
         },
     };
 };

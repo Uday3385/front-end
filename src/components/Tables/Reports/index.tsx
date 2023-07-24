@@ -120,3 +120,4 @@ export default function ReportsTable() {
 
     return <DataTable columns={renderColumns} data={data} />;
 }
+ 

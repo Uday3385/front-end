@@ -6,12 +6,12 @@ import InputFieldContainer from '@/src/components/Containers/InputFieldContainer
 import InputLabel from '@/src/components/Inputs/InputLabel';
 import styles from '@/src/components/Inputs/TextField/styles';
 
-type DatePickerExtraProps = {
-    id?: string;
+export type DatePickerExtraProps = {
     required?: boolean;
+    id?: string;
 };
 
-type Props = DatePickerProps<typeof DatePicker> &
+export type Props = DatePickerProps<typeof DatePicker> &
     DatePickerExtraProps &
     InputValidationProps & {
         onDateChange?: (date: string, context: any) => void;

@@ -2,11 +2,12 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import type { MenuItemStateType, ReportBuilderState } from '@/src/types';
 import globalDragDrop, { type GlobalDragDropState } from './reducers/globalDragDrop';
+import modal, { type ModalState } from './reducers/modal';
 import reportBuilder from './reducers/reportBuilder';
 import sidebarMenu from './reducers/sidebarMenu';
 
 export const store = configureStore({
-    reducer: { sidebarMenu, globalDragDrop, reportBuilder },
+    reducer: { sidebarMenu, globalDragDrop, reportBuilder, modal },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
@@ -18,4 +19,5 @@ export type RootStateValues = {
     globalDragDrop: keyof GlobalDragDropState;
     reportBuilder: keyof ReportBuilderState;
     sidebarMenu: keyof MenuItemStateType;
+    modal: keyof ModalState;
 };

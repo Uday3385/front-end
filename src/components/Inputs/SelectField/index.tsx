@@ -10,10 +10,11 @@ import SelectFieldSearchMenu, { type SelectFieldSearchMenuProps } from '../Selec
 import { type InputValidationProps } from '@/src/components/Inputs/TextField';
 import { useInputFieldRef } from '@/src/hooks/useInputField';
 import InputFieldContainer from '@/src/components/Containers/InputFieldContainer';
+import { borderColor } from '@/src/theme/colors';
 import InputLabel from '@/src/components/Inputs/InputLabel';
 
-type SelectFieldType = SelectProps &
-    SelectFieldSearchMenuProps &
+export type SelectFieldType = SelectProps &
+    Omit<SelectFieldSearchMenuProps, 'items'> &
     InputValidationProps & {
         skipSelectPlaceholder?: boolean;
         isSearchEnabled?: boolean;
@@ -58,6 +59,7 @@ const SelectField = (props: SelectFieldType) => {
         required = true,
         menuProps,
         labelProps,
+        endAdornment,
         fullWidth = true,
         trimValue = true,
         showError = true,
@@ -151,6 +153,10 @@ const SelectField = (props: SelectFieldType) => {
         minLengthErrorLabel = validate.minLengthErrorLabel,
         maxLengthErrorLabel = validate.maxLengthErrorLabel,
         fieldItems = items;
+
+    if (!fieldItems?.length) {
+        throw 'SelectField: `items` prop is required.';
+    }
 
     React.useEffect(() => {
         if (defaultValue !== undefined) {
@@ -421,6 +427,8 @@ const SelectField = (props: SelectFieldType) => {
         return renderValue ? renderValue({ label: itemLabel, value: selected }) : itemLabel;
     };
 
+    const isSelectSearchField = isSearchEnabled && fieldItems?.length > 5;
+
     const inputStyle = {
             marginTop: 0,
             height: '35px',
@@ -432,6 +440,10 @@ const SelectField = (props: SelectFieldType) => {
                     fontSize: '14px !important',
                     fontWeight: '400 !important',
                     backgroundColor: 'transparent !important',
+                },
+
+                '& .MuiSelect-select span': {
+                    color: `${borderColor.greyDarken} !important`,
                 },
 
                 '& .MuiInputBase-root': {
@@ -452,8 +464,18 @@ const SelectField = (props: SelectFieldType) => {
             placeholder: placeholder,
             displayEmpty: displayEmpty,
             autoComplete: autoComplete,
+            endAdornment,
             // defaultValue:defaultValue,
-            input: <OutlinedInput id={id} autoFocus={false} style={inputStyle} fullWidth label="" />,
+            input: (
+                <OutlinedInput
+                    endAdornment={endAdornment}
+                    autoFocus={false}
+                    style={inputStyle}
+                    label=""
+                    id={id}
+                    fullWidth
+                />
+            ),
             MenuProps: fieldMenuProps,
             renderValue: renderFieldValue,
             open: openSelectMenu,
@@ -492,12 +514,12 @@ const SelectField = (props: SelectFieldType) => {
                 />
             )}
 
-            {isSearchEnabled && fieldItems?.length > 5 ? (
+            {isSelectSearchField ? (
                 <SelectFieldSearchMenu
-                    items={fieldItems}
-                    required={required}
-                    placeholder={searchPlaceholder}
                     selectComponentProps={fieldProps}
+                    placeholder={searchPlaceholder}
+                    required={required}
+                    items={fieldItems}
                     {...otherProps}
                 />
             ) : (

@@ -1,8 +1,15 @@
+import dynamic from 'next/dynamic';
+
 import DashboardMainContent, { type MainContentType } from '@/src/components/Dashboard/MainContent';
 import DashboardContentHeader from '@/src/components/Dashboard/ContentHeader';
+import type { MenuItemType } from '@/src/types';
 import DashboardContentMenu from '@/src/components/Dashboard/ContentMenu';
 import styles from './styles.module.css';
-import { MenuItemType } from '@/src/types';
+import { getDynamicImportProps } from '@/src/utils/dynamicImport';
+
+const RenderChildren = dynamic(() => import('@/src/components/RenderChildren'), {
+    ...getDynamicImportProps(),
+});
 
 export default function DashboardContainer({
     transparentBackground = false,
@@ -20,7 +27,7 @@ export default function DashboardContainer({
             <DashboardContentHeader />
             <DashboardContentMenu menu={contentMenu} />
             <DashboardMainContent {...mainContent} transparentBackground={transparentBackground}>
-                {children}
+                <RenderChildren>{children}</RenderChildren>
             </DashboardMainContent>
         </div>
     );

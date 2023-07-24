@@ -10,7 +10,7 @@ export default function InputFieldContainer({ children, sx = {}, ...props }: Box
     };
 
     return (
-        <Box {...props} sx={rootStyle} className="selectFieldWrapper">
+        <Box {...props} sx={rootStyle} className="selectFieldWrapper inputFieldContainer">
             {children}
         </Box>
     );

@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 
 import type { MenuItemType } from '@/src/types';
 import ToggleMenuIcon from '@/src/components/SidebarMenu/ToggleMenuIcon';
-import  { useRouter } from '@/src/hooks/useNavigation';
+import { useRouter } from '@/src/hooks/useNavigation';
 import buttonStyles from './styles';
 import stylesModule from './styles.module.css';
 import { useTheme } from '@/src/theme';

@@ -1,9 +1,10 @@
-import React, { useState, useMemo } from 'react';
-import Select, { type SelectProps } from '@mui/material/Select';
-import MenuItem, { type MenuItemProps } from '@mui/material/MenuItem';
+import * as React from 'react';
+
 import OutlinedInput, { type OutlinedInputProps } from '@mui/material/OutlinedInput';
+import MenuItem, { type MenuItemProps } from '@mui/material/MenuItem';
+import Select, { type SelectProps } from '@mui/material/Select';
+import type { SxProps } from '@mui/material';
 import ListSubheader from '@mui/material/ListSubheader';
-import { SxProps } from '@mui/material';
 
 type InputChangeEvent = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 type GetItem = (item: any, index: number) => any;
@@ -121,7 +122,7 @@ const SelectFieldSearchMenu = ({
     selectComponentProps = {},
     searchMenItemProps = {},
 }: SelectFieldSearchMenuProps) => {
-    const [searchKeyword, setSearchKeyword] = useState(''),
+    const [searchKeyword, setSearchKeyword] = React.useState(''),
         keyword = searchKeyword?.trim()?.toLowerCase(),
         fieldValue = selectComponentProps.value || value || '';
 
@@ -129,7 +130,7 @@ const SelectFieldSearchMenu = ({
         setSearchKeyword(keyword);
     };
 
-    const menuWidthLimit = useMemo(() => {
+    const menuWidthLimit = React.useMemo(() => {
         const widthLimit = typeof window !== 'undefined' ? window.innerWidth : +menuWidth;
         return widthLimit < +menuWidth ? widthLimit - 40 : menuWidth;
     }, [window?.innerWidth, menuWidth]);
@@ -140,10 +141,10 @@ const SelectFieldSearchMenu = ({
             minWidth: '140px',
             // maxWidth: '225px',
             overflow: 'hidden',
-            height: '40px',
+            height: '35px',
             background: '#fff',
             color: '#000',
-            marginRight: '14px',
+            margin: '0px',
             flexGrow: 1,
             fontWeight: 400,
         },
@@ -188,7 +189,15 @@ const SelectFieldSearchMenu = ({
             // disableAutoFocusItem: true,
             onKeyDown: selectComponentProps?.MenuProps?.onKeyDown || undefined,
         },
-        input: <OutlinedInput fullWidth autoFocus={false} style={inputStyle} size="medium" />,
+        input: (
+            <OutlinedInput
+                endAdornment={selectComponentProps.endAdornment}
+                autoFocus={false}
+                style={inputStyle}
+                size="medium"
+                fullWidth
+            />
+        ),
         value: searchKeyword ? '' : fieldValue,
         onOpen: (props) => {
             selectComponentProps?.onOpen && selectComponentProps.onOpen(props);

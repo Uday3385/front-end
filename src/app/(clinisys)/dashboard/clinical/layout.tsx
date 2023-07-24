@@ -1,8 +1,8 @@
 'use client';
 
+import { getSubMenuByMenuTitle } from '@/src/hooks/useSidebarMenu';
 import DashboardContainer from '@/src/components/Containers/Dashboard';
-import { menuItems } from '@/src/components/SidebarMenu/RenderMenuItems';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-    return <DashboardContainer contentMenu={menuItems[3].subMenu}>{children}</DashboardContainer>;
+    return <DashboardContainer contentMenu={getSubMenuByMenuTitle('Clinical')}>{children}</DashboardContainer>;
 }

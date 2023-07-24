@@ -9,7 +9,6 @@ import { setDraggedItem } from '@/src/redux/reducers/globalDragDrop';
 import { getStoreState } from '@/src/hooks/useStore';
 
 export type Item = {
-    id?: string;
     [key: string]: any;
 };
 
@@ -17,7 +16,7 @@ export type DragEventType = React.DragEvent;
 
 type DragEventHandlerType = (event: React.DragEvent) => void;
 
-type IsItemValid = ({ event }: { event: DragEventType }) => boolean;
+type IsItemValid = ({ event, contextType }: { event: DragEventType; contextType?: any }) => boolean;
 
 type DragType = (props: { states: GlobalDragDropState; event: DragEventType }) => void;
 
@@ -27,7 +26,8 @@ type SetupGlobalDragDrop = GlobalDragDropState & {
     onDragEnter?: DragType;
     onDragOver?: DragType;
     onDragEnd?: DragType;
-    onDrop: DragType;
+    getItemId: (item?: Item) => string;
+    onDrop?: DragType;
 };
 
 type DraggableProps = {
@@ -75,6 +75,7 @@ type DragHandlerProps = {
     dropEffect?: DataTransfer['dropEffect'];
     dragType?: GlobalDragDropState['dragType'];
     dispatch: Dispatch<AnyAction>;
+    getItemId: SetupGlobalDragDrop['getItemId'];
     item?: Item;
 };
 
@@ -82,6 +83,8 @@ type DropHandlerProps = {
     setDropEffectCacheRef: SetDropEffectCacheRefCallback;
     getDragDropCacheRef: GetDragDropCacheRefCallback;
     contextType: GlobalDragDropState['contextType'];
+    dropEffect: GlobalDragDropState['dropEffect'];
+    getItemId: SetupGlobalDragDrop['getItemId'];
     dispatch: Dispatch<AnyAction>;
     onDrop: SetupGlobalDragDrop['onDrop'];
     item?: Item;
@@ -95,6 +98,7 @@ type DragEnterHandlerProps = {
     onDragOver?: SetupGlobalDragDrop['onDragOver'];
     contextType: GlobalDragDropState['contextType'];
     dropEffect: GlobalDragDropState['dropEffect'];
+    getItemId: SetupGlobalDragDrop['getItemId'];
     dispatch: Dispatch<AnyAction>;
     item?: Item;
 };
@@ -130,6 +134,7 @@ const handleDragItemStart =
         effectAllowed,
         onDragStart,
         contextType,
+        getItemId,
         dragType,
         dispatch,
         item,
@@ -139,7 +144,7 @@ const handleDragItemStart =
 
         setDropEffectCacheRef('none');
 
-        const draggableId = item?.id;
+        const draggableId = getItemId(item);
 
         if (effectAllowed) {
             event.dataTransfer.effectAllowed = effectAllowed;
@@ -152,7 +157,7 @@ const handleDragItemStart =
 
         const states = {
             isDraggingItem: true,
-            draggedItem: item?.id,
+            draggedItem: draggableId,
         };
 
         setTimeout(() => {
@@ -172,10 +177,10 @@ const handleDragItemStart =
 const handleDragItemEnd =
     ({
         setDropEffectCacheRef,
+        getDragDropCacheRef,
+        contextType,
         onDragEnd,
         dispatch,
-        contextType,
-        getDragDropCacheRef,
     }: DragHandlerProps): React.DragEventHandler =>
     async (event) => {
         if (!isContextTypeValid({ getDragDropCacheRef, contextType })) return;
@@ -205,7 +210,14 @@ const handleDragItemEnd =
  * Handle drag drop item
  */
 export const handleDropItem =
-    ({ getDragDropCacheRef, contextType, dispatch, onDrop, item }: DropHandlerProps): React.DragEventHandler =>
+    ({
+        getDragDropCacheRef,
+        contextType,
+        getItemId,
+        dispatch,
+        onDrop,
+        item,
+    }: DropHandlerProps): React.DragEventHandler =>
     async (event) => {
         event.preventDefault();
         if (!isContextTypeValid({ getDragDropCacheRef, contextType })) return;
@@ -213,7 +225,7 @@ export const handleDropItem =
         if (getDragDropCacheRef().dropEffect === 'none') return;
 
         const states = {
-            droppedItem: item?.id,
+            droppedItem: getItemId(item),
             isDraggingItem: false,
         };
 
@@ -240,20 +252,27 @@ export const handleDragEnterItem =
         isItemValid,
         dropEffect,
         onDragOver,
+        getItemId,
         dispatch,
         item,
     }: DragEnterHandlerProps): React.DragEventHandler =>
     async (event) => {
         event.preventDefault();
-        if (!isContextTypeValid({ getDragDropCacheRef, contextType })) return;
+        if (!isContextTypeValid({ getDragDropCacheRef, contextType })) {
+            event.dataTransfer.dropEffect = 'none';
+            return;
+        }
+
+        const itemId = getItemId(item);
 
         const states = {
-            draggingOverItem: item?.id,
+            draggingOverItem: itemId,
             isDraggingItem: true,
-            canDropItem: isItemValid ? isItemValid({ event }) : true,
+            canDropItem: isItemValid ? isItemValid({ event, contextType: itemId }) : true,
         };
 
         if (!dropEffect || !states.canDropItem) {
+            event.dataTransfer.dropEffect = 'none';
             return;
         }
 
@@ -327,6 +346,7 @@ export const useSetupGlobalDragDrop = (props: SetupGlobalDragDrop) => {
             onDragStart,
             onDragOver,
             onDragEnd,
+            getItemId,
             onDrop,
         } = props,
         refId = getCacheRefId(contextType);
@@ -344,11 +364,19 @@ export const useSetupGlobalDragDrop = (props: SetupGlobalDragDrop) => {
             effectAllowed,
             contextType,
             onDragStart,
+            getItemId,
             dragType,
             dispatch,
             item,
         }),
-        onDragEnd: handleDragItemEnd({ dispatch, onDragEnd, contextType, getDragDropCacheRef, setDropEffectCacheRef }),
+        onDragEnd: handleDragItemEnd({
+            setDropEffectCacheRef,
+            getDragDropCacheRef,
+            contextType,
+            getItemId,
+            onDragEnd,
+            dispatch,
+        }),
         draggable: true,
     });
 
@@ -361,6 +389,7 @@ export const useSetupGlobalDragDrop = (props: SetupGlobalDragDrop) => {
                   onDragEnter,
                   contextType,
                   dropEffect,
+                  getItemId,
                   dispatch,
                   item,
               })
@@ -380,10 +409,20 @@ export const useSetupGlobalDragDrop = (props: SetupGlobalDragDrop) => {
             contextType,
             onDragOver,
             dropEffect,
+            getItemId,
             dispatch,
             item,
         }),
-        onDrop: handleDropItem({ setDropEffectCacheRef, getDragDropCacheRef, item, dispatch, onDrop, contextType }),
+        onDrop: handleDropItem({
+            setDropEffectCacheRef,
+            getDragDropCacheRef,
+            contextType,
+            dropEffect,
+            getItemId,
+            dispatch,
+            onDrop,
+            item,
+        }),
     });
 
     React.useEffect(() => {
@@ -398,7 +437,7 @@ export const useSetupGlobalDragDrop = (props: SetupGlobalDragDrop) => {
 
         return () => {
             setIsReady(false);
-        };
+        }; 
     }, []);
 
     return { isReady };

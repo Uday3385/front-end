@@ -1,3 +1,5 @@
+'use client';
+
 import Typography from '@mui/material/Typography';
 
 import RadioButton, { type RadioButtonOptions } from '@/src/components/Inputs/RadioButton';

@@ -8,7 +8,7 @@ interface ButtonProps extends MuiButtonProps {
     iconWidth?: number;
     iconUrl?: string;
     margin?: string;
-    title: string;
+    title?: string;
 }
 
 export default function PrimaryButton({ margin = '0px 12px 0px 0px', children, ...props }: ButtonProps) {

@@ -1,7 +1,7 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import Typography from '@mui/material/Typography';
+import dynamic from 'next/dynamic';
 
 import DepartmentsWorkOutSignOffTable from '@/src/components/Tables/DepartmentsWorkOutSignOff';
 import { getDynamicImportProps } from '@/src/utils/dynamicImport';
@@ -13,14 +13,16 @@ import styles from '@/src/styles/dashboard/content';
 const DataStatistics = dynamic(() => import('@/src/components/DataStatistics'), { ...getDynamicImportProps() });
 
 export default function InternalAudit() {
-    const theme = useTheme();
+    const theme = useTheme(); 
 
     const renderSection1 = (
         <>
             <div style={styles.graphWrapper(stylesObj.graphWrapper({ theme }))}>Graph</div>
 
             <Typography style={styles.headerTitle({ theme })}>Top Reasons for Missing Events</Typography>
-            <div style={styles.graphWrapper(stylesObj.graphWrapper({ theme, style: { marginBottom: '0px' } }))}>Graph</div>
+            <div style={styles.graphWrapper(stylesObj.graphWrapper({ theme, style: { marginBottom: '0px' } }))}>
+                Graph
+            </div>
         </>
     );
 
@@ -72,13 +74,7 @@ export default function InternalAudit() {
                     radioButton: undefined,
                     content: (
                         <>
-                            <div
-                                style={styles.graphWrapper(
-                                    stylesObj.graphWrapper({ theme  }),
-                                )}
-                            >
-                                Graph
-                            </div>
+                            <div style={styles.graphWrapper(stylesObj.graphWrapper({ theme }))}>Graph</div>
 
                             <Typography style={styles.headerTitleSub({ theme })}>Departments w/out Signoff</Typography>
                             <DepartmentsWorkOutSignOffTable />

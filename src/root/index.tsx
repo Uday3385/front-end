@@ -5,6 +5,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Provider } from 'react-redux';
 
+import WatchUnsavedDataProvider from '@/src/hooks/useWatchUnsavedData';
 import GlobalDataRefProvider from '@/src/hooks/useGlobalDataRef';
 import { PageRouteProgress } from '@/src/hooks/usePageRouteProgress';
 import ThemeProvider from '@/src/theme';
@@ -29,7 +30,7 @@ export default function App({ children }: { children: React.ReactNode }) {
                 <Provider store={store}>
                     <GlobalDataRefProvider>
                         <PageRouteProgress />
-                        {children}
+                        <WatchUnsavedDataProvider>{children}</WatchUnsavedDataProvider>
                     </GlobalDataRefProvider>
                 </Provider>
             </ThemeProvider>

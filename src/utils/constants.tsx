@@ -78,3 +78,29 @@ export const MONTHS = [
     'November',
     'December',
 ];
+
+export const DATE_RANGES = [
+    { label: 'Today', value: 'today' },
+    { label: 'Previous Day', value: 'previous day' },
+    { label: 'This Week', value: 'this week' },
+    { label: 'Previous Week', value: 'previous week' },
+    { label: 'Current Month', value: 'current month' },
+    { label: 'Previous Month', value: 'previous month' },
+    { label: 'Current Year', value: 'current year' },
+];
+
+export const TIME_RANGES = [
+    { label: 'Last Hour', value: 'last hour' },
+    { label: 'Last 3 Hours', value: 'last 3 hours' },
+    { label: 'Last 6 Hours', value: 'last 6 hours' },
+    { label: 'Last 12 Hours', value: 'last 12 hours' },
+    { label: 'Last 24 Hours', value: 'last 24 hours' },
+];
+
+/**
+ * Report Builder
+ */
+export const REPORT_BUILDER = {
+    dragDropContainerClassName: 'dragDropContainer',
+    draggedItemClassName: 'dataElementSelected',
+};

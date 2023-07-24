@@ -10,7 +10,7 @@ export type MainContentType = {
     children: React.ReactNode;
     style?: React.CSSProperties;
 };
-
+ 
 export default function MainContent({
     transparentBackground = false,
     contentNavbar,
@@ -27,3 +27,4 @@ export default function MainContent({
         </div>
     );
 }
+ 

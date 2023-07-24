@@ -35,9 +35,9 @@ export type InputValidationProps = {
     inputRef?: InputRef;
     validate?: {
         regex?: RegExp;
-        invalidLabel?: ''; // Default to: `{label} is invalid`
-        errorLabel?: ''; // Default to: {label}
-        emptyLabel?: ''; // Default to: `{label} is required`
+        invalidLabel?: string; // Default to: `{label} is invalid`
+        errorLabel?: string; // Default to: {label}
+        emptyLabel?: string; // Default to: `{label} is required`
 
         // `${label} minimum ${pluralizeCharacterText(minLength)} is ${minLength}.`
         minLengthErrorLabel?: '';

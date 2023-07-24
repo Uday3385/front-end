@@ -1,3 +1,5 @@
+'use client';
+
 import DashboardContainer from '@/src/components/Containers/Dashboard';
 import PatientFinancialService from '@/src/components/Dashboard/Content/PatientFinancialService';
 

@@ -1,17 +1,18 @@
 import * as React from 'react';
-import TableContainer, { TableContainerProps } from '@mui/material/TableContainer';
-import Table, { TableProps as MuiTableProps } from '@mui/material/Table';
-import TableFooter, { TableFooterProps } from '@mui/material/TableFooter';
-import TableBody, { TableBodyProps } from '@mui/material/TableBody';
-import TableCell, { TableCellProps } from '@mui/material/TableCell';
-import TableHead, { TableHeadProps } from '@mui/material/TableHead';
-import TableRow, { TableRowProps } from '@mui/material/TableRow';
-import { SxProps, TooltipProps } from '@mui/material';
+
+import TableContainer, { type TableContainerProps } from '@mui/material/TableContainer';
+import Table, { type TableProps as MuiTableProps } from '@mui/material/Table';
+import TableFooter, { type TableFooterProps } from '@mui/material/TableFooter';
+import TableBody, { type TableBodyProps } from '@mui/material/TableBody';
+import TableCell, { type TableCellProps } from '@mui/material/TableCell';
+import TableHead, { type TableHeadProps } from '@mui/material/TableHead';
+import TableRow, { type TableRowProps } from '@mui/material/TableRow';
+import type { SxProps, TooltipProps } from '@mui/material';
 import Paper from '@mui/material/Paper';
 
-import { Theme, useTheme } from '@/src/theme';
+import { useTheme, type Theme } from '@/src/theme';
+import type { TooltipType } from '@/src/types';
 import { CustomTooltip } from '@/src/components/Tooltips/CustomTooltip';
-import { TooltipType } from '@/src/types';
 import * as constants from '@/src/utils/constants';
 import styles from './styles';
 

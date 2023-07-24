@@ -100,3 +100,8 @@ export const useSetSidebarMenuByCurrentPage = () => {
         }
     }, [pathname]);
 };
+
+export const getSubMenuByMenuTitle = (title: string) => {
+    return menuItems.find((menuItem) => menuItem.title === title)?.subMenu;
+};
+ 

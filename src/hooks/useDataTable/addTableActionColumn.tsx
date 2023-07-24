@@ -1,10 +1,12 @@
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import IconButton, { type IconButtonProps } from '@mui/material/IconButton';
+import Box, { type BoxProps } from '@mui/material/Box';
+import { type SxProps } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { SxProps } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import InfoIcon from '@mui/icons-material/Info';
 
 import styles from './styles';
+import { DarkTooltip } from '@/src/components/Tooltips/CustomTooltip';
 
 type ActionCallbackParams = { row: any; index: number };
 type ActionCallback = (props: ActionCallbackParams) => void;
@@ -18,10 +20,12 @@ type CustomActionButton = ActionCallbackParams & {
 };
 
 type AddActionColumnProps = {
-    wrapperStyle?: React.CSSProperties;
+    headerCellStyle?: React.CSSProperties;
     customButtons?: CustomActionButton[];
+    wrapperStyle?: BoxProps['sx'];
     isDataEmpty?: boolean;
     onDelete?: ActionCallback;
+    boxProps?: BoxProps;
     onEdit?: ActionCallback;
     onInfo?: ActionCallback;
     style?: React.CSSProperties;
@@ -33,8 +37,10 @@ type AddActionColumnProps = {
  */
 export default function addTableActionColumn({
     customButtons,
+    headerCellStyle = {},
     wrapperStyle = {},
     isDataEmpty = false,
+    boxProps = {},
     style = {},
     title = 'Actions',
     onDelete,
@@ -61,25 +67,44 @@ export default function addTableActionColumn({
         headerCellStyle: {
             textAlign: 'right',
             paddingRight: '26px',
+            ...headerCellStyle,
         },
         selector: ({ row, index }: ActionCallbackParams) => (
-            <div style={_wrapperStyle}>
+            <Box {...boxProps} sx={_wrapperStyle}>
                 {onDelete && (
-                    <IconButton style={deleteIconStyle} onClick={() => onDelete({ row, index })}>
-                        <DeleteIcon style={styles.icon} />
-                    </IconButton>
+                    <DarkTooltip title="Delete" placement="top">
+                        <IconButton
+                            className="tableActionDeleteIconBtn"
+                            style={deleteIconStyle}
+                            onClick={() => onDelete({ row, index })}
+                        >
+                            <DeleteIcon style={styles.icon} />
+                        </IconButton>
+                    </DarkTooltip>
                 )}
 
                 {onEdit && (
-                    <IconButton style={editIconStyle} onClick={() => onEdit({ row, index })}>
-                        <EditIcon style={styles.icon} />
-                    </IconButton>
+                    <DarkTooltip title="Edit" placement="top">
+                        <IconButton
+                            className="tableActionEditIconBtn"
+                            style={editIconStyle}
+                            onClick={() => onEdit({ row, index })}
+                        >
+                            <EditIcon style={styles.icon} />
+                        </IconButton>
+                    </DarkTooltip>
                 )}
 
                 {onInfo && (
-                    <IconButton style={infoIconStyle} onClick={() => onInfo({ row, index })}>
+                    <DarkTooltip title="Info" placement="top">
+                    <IconButton
+                        className="tableActionInfoIconBtn"
+                        style={infoIconStyle}
+                        onClick={() => onInfo({ row, index })}
+                    >
                         <InfoIcon style={styles.icon} />
                     </IconButton>
+                    </DarkTooltip>
                 )}
 
                 {hasCustomButtons
@@ -99,7 +124,7 @@ export default function addTableActionColumn({
                           return customButton?.render ? customButton?.render({ row, index }) : customIcon;
                       })
                     : null}
-            </div>
+            </Box>
         ),
     };
 }

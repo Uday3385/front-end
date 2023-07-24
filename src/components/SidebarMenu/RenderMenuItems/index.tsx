@@ -94,6 +94,29 @@ export const menuItems: MenuItemType[] = [
         ],
     },
     {
+        icon: ClinicalIcon,
+        path: '/dashboard/revenue',
+        title: 'Revenue',
+        pathAlias: '/dashboard/revenue/review',
+        subMenu: [
+            {
+                path: '/dashboard/revenue/review',
+                title: 'Review',
+                paths: ['/dashboard/revenue', '/dashboard/revenue/review'],
+            },
+            {
+                path: '/dashboard/revenue/task',
+                title: 'Task',
+                paths: ['/dashboard/revenue', '/dashboard/revenue/task'],
+            },
+            {
+                path: '/dashboard/revenue/assist',
+                title: 'Assist',
+                paths: ['/dashboard/revenue', '/dashboard/revenue/assist'],
+            },
+        ],
+    },
+    {
         icon: ReportsIcon,
         path: '/dashboard/reports',
         title: 'Reports',

@@ -34,7 +34,7 @@ export default function AssistCard({
     return (
         <Box sx={rootStyles} className="assistCard">
             <div className="iconWrapper">
-                <Image src={iconUrl} alt={title} />
+                <Image src={iconUrl} alt={title} width={40} height={40} />
             </div>
             <Typography component="div" className="assistCardContent">
                 <Typography component="h4" className="assistCardTitle">

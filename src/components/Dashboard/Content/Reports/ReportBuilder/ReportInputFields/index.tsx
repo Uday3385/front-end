@@ -2,6 +2,7 @@
 
 import Box from '@mui/material/Box';
 
+import SelectDateField from '@/src/components/Inputs/SelectDateField';
 import SelectField from '@/src/components/Inputs/SelectField';
 import TextField from '@/src/components/Inputs/TextField';
 import DateField from '@/src/components/Inputs/DateField';
@@ -18,25 +19,21 @@ export default function ReportInputFields() {
     return (
         <Box sx={stylesObj.fieldsWrapper}>
             <div className="fieldsWrapperLeft">
-                <SelectField
-                    skipSelectPlaceholder={false}
+                <TextField
                     containerProps={containersProps}
-                    placeholder="Select"
+                    placeholder=""
                     required={false}
-                    items={[{ label: 'Select', value: '' }]}
                     label="Report Name"
                     labelProps={labelProps}
                 />
-                <SelectField
-                    skipSelectPlaceholder={false}
+                <TextField
                     containerProps={containersProps}
-                    placeholder="Select"
+                    placeholder=""
                     required={false}
-                    items={[{ label: 'Select', value: '' }]}
                     label="Report Category"
                     labelProps={labelProps}
                 />
-                <DateField label="Date Range" labelProps={labelProps} containerProps={containersProps} />
+                <SelectDateField required={false} labelMinWidth="123px" />
             </div>
             <div className="fieldsWrapperRight">
                 <SelectField

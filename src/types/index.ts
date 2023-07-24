@@ -65,19 +65,39 @@ export type ProcessResponseType = {
 
 export type TooltipType = 'dark' | 'light' | 'html';
 
-export type ReportBuilderDropRegion = 'reportPrompts' | 'columns';
+export type ReportBuilderDragDropContext = {
+    reportPromptsField1: 'reportPromptsField1';
+    reportPromptsField2: 'reportPromptsField2';
+    reportPrompts: 'reportPrompts';
+    dataElements: 'dataElements';
+    columns: 'columns';
+};
+
+export type ReportBuilderDragDropContextType = keyof ReportBuilderDragDropContext | '';
+
+export type ReportBuilderDragDropArrowContextType = keyof Omit<ReportBuilderDragDropContext, 'dataElements'>;
 
 export interface ReportBuilderState {
+    selectedDraggedItemContext: ReportBuilderDragDropContextType;
     reportPromptDataElements: any[];
     reportColumnDataElements: any[];
+    selectedDraggedItems: { [key in ReportBuilderDragDropContextType]?: any[] };
+    _dataElements: any[];
     dataElements: any[];
 }
 
+export type ReportBuilderSelectedDragItems =
+    ReportBuilderState['selectedDraggedItems'][ReportBuilderDragDropContextType];
+
+export type ReportBuilderReportPromptsOrColumns =
+    | ReportBuilderState['reportColumnDataElements']
+    | ReportBuilderState['reportPromptDataElements'];
+
 export type DropRegionClassNames = {
+    selectedDraggedItemContext: ReportBuilderDragDropContextType;
+    selectedDraggedItems?: ReportBuilderSelectedDragItems;
     isDraggingOverItem?: boolean;
     hasDataElements?: boolean;
-    dropRegionRef?: React.MutableRefObject<HTMLElement | null>;
-    draggedItem?: string;
     isDragging?: boolean;
-    dropRegion: ReportBuilderDropRegion;
+    contextType: ReportBuilderDragDropContextType;
 };

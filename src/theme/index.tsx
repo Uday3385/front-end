@@ -19,10 +19,12 @@ type ThemeBorderColor = {
     tableColumnMarker: string;
     tableFooterThick: string;
     tableFooter: string;
-    lightGrey: string;
     tableHeader: string;
+    mediumGrey: string;
     greyDarken: string;
+    lightGrey: string;
     tableRow: string;
+    darkText: string;
     default: string;
     light: string;
     main: string;
