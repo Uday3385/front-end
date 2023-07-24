@@ -25,6 +25,10 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+          
+      # Add a step to navigate to the "build" directory
+      - name: Navigate to Build Directory
+        run: cd build
 
       - name: Copy files to the AWS S3 bucket
         run: |
